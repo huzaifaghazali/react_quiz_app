@@ -1,14 +1,42 @@
-import { useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import Header from './Components/Header';
 import Main from './Components/Main';
 
+const initialState = {
+  question: [],
+
+  // 'loading', 'error', 'ready', 'active', 'finished'
+  status: 'loading',
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'dataReceived':
+      return {
+        ...state,
+        questions: action.payload,
+        status: 'ready',
+      };
+    case 'dataFailed':
+      return {
+        ...state,
+        status: 'error',
+      };
+
+    default:
+      throw new Error('Action unknown');
+  }
+}
+
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   useEffect(() => {
     fetch('http://localhost:8000/questions')
       .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.error('Error occurred ' + err));
+      .then((data) => dispatch({ type: 'dataReceived', payload: data }))
+      .catch((err) => dispatch({ type: 'dataFailed'}));
 
     return () => {};
   }, []);
