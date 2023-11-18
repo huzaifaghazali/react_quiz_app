@@ -1,9 +1,14 @@
-
+import Header from './Components/Header';
+import Main from './Components/Main';
 
 function App() {
   return (
-    <div className="App">
-      
+    <div className="app">
+      <Header />
+      <Main>
+        <p>1 / 15</p>
+        <p>Question?</p>
+      </Main>
     </div>
   );
 }
