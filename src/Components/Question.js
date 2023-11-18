@@ -1,7 +1,10 @@
-import React from 'react'
-
-export default function Question() {
+import React from 'react';
+import Options from './Options';
+export default function Question({ question }) {
   return (
-    <div>Question</div>
-  )
+    <div>
+      <h4>{question.question}</h4>
+      <Options question={question} />
+    </div>
+  );
 }
