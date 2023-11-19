@@ -1,13 +1,25 @@
 import React, { useEffect } from 'react';
 
 function Timer({ dispatch, secondsRemaining }) {
+  const mins = Math.floor(secondsRemaining / 60);
+  const seconds = secondsRemaining % 60;
+
   useEffect(() => {
-    setInterval(() => {
+    const id = setInterval(() => {
       dispatch({ type: 'tick' });
     }, 1000);
+
+    // timer will keep on running even if the component is unmounted so we need clear function
+    return () => clearInterval(id);
   }, [dispatch]);
 
-  return <div className='timer'>{secondsRemaining}</div>;
+  return (
+    <div className='timer'>
+      {mins < 10 && '0'}
+      {mins}:{seconds < 10 && '0'}
+      {seconds}
+    </div>
+  );
 }
 
 export default Timer;
